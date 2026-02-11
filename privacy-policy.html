@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이지블록스 컨트롤러 - 개인정보처리방침</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.8;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #1e293b;
+            border-radius: 16px;
+            padding: 48px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 28px;
+            color: #60a5fa;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #334155;
+        }
+        h2 {
+            font-size: 20px;
+            color: #93c5fd;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+        p, li {
+            color: #cbd5e1;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+        .contact-box {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 16px;
+        }
+        .contact-box p {
+            margin-bottom: 4px;
+        }
+        .contact-label {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        .contact-value {
+            color: #e2e8f0;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        a { color: #60a5fa; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .lang-divider {
+            margin: 48px 0;
+            border-top: 2px solid #334155;
+            position: relative;
+            text-align: center;
+        }
+        .lang-divider span {
+            background-color: #1e293b;
+            padding: 0 16px;
+            position: relative;
+            top: -12px;
+            color: #64748b;
+            font-size: 13px;
+        }
+        .effective-date {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 32px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- 한국어 -->
+        <h1>개인정보처리방침</h1>
+        <p class="subtitle">이지블록스 컨트롤러 (EasyBlocks Controller)</p>
+
+        <h2>1. 개요</h2>
+        <p>
+            이지블록스 컨트롤러(이하 "앱")는 BLE(Bluetooth Low Energy)를 통해 
+            HexaBoard 등 외부 하드웨어 기기와 통신하기 위한 모바일 애플리케이션입니다. 
+            본 개인정보처리방침은 앱의 정보 수집 및 이용에 관한 사항을 안내합니다.
+        </p>
+
+        <h2>2. 수집하는 개인정보</h2>
+        <p><strong>본 앱은 어떠한 개인정보도 수집하지 않습니다.</strong></p>
+        <ul>
+            <li>회원가입, 로그인 기능이 없습니다.</li>
+            <li>사용자의 이름, 이메일, 전화번호 등 개인 식별 정보를 요구하지 않습니다.</li>
+            <li>위젯 설정 등 앱 데이터는 사용자의 기기 내 로컬 저장소에만 저장되며, 외부 서버로 전송되지 않습니다.</li>
+        </ul>
+
+        <h2>3. 블루투스(BLE) 권한</h2>
+        <p>앱은 다음과 같은 블루투스 관련 권한을 요청합니다:</p>
+        <ul>
+            <li><strong>블루투스 스캔</strong>: 주변 BLE 기기를 검색하기 위해 사용됩니다.</li>
+            <li><strong>블루투스 연결</strong>: 선택한 BLE 기기와 데이터를 주고받기 위해 사용됩니다.</li>
+        </ul>
+        <p>BLE 통신 데이터는 앱과 연결된 하드웨어 기기 간에 직접 전달되며, 외부로 전송되거나 저장되지 않습니다.</p>
+
+        <h2>4. 위치 권한 (Android)</h2>
+        <p>
+            Android 운영체제의 정책에 따라 BLE 기기 스캔 시 위치 권한이 필요합니다. 
+            이는 Android OS의 요구사항이며, <strong>앱은 사용자의 실제 위치 정보를 수집, 저장, 전송하지 않습니다.</strong>
+        </p>
+
+        <h2>5. 제3자 제공 및 공유</h2>
+        <p>앱은 어떠한 데이터도 제3자에게 제공하거나 공유하지 않습니다. 광고 SDK, 분석 도구 등 제3자 서비스를 사용하지 않습니다.</p>
+
+        <h2>6. 데이터 보관 및 삭제</h2>
+        <p>
+            모든 앱 데이터(위젯 설정 등)는 사용자의 기기에만 저장됩니다. 
+            앱을 삭제하면 기기에 저장된 모든 데이터가 함께 삭제됩니다. 
+            앱 내 설정에서 데이터를 직접 초기화할 수도 있습니다.
+        </p>
+
+        <h2>7. 아동의 개인정보</h2>
+        <p>본 앱은 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.</p>
+
+        <h2>8. 개인정보처리방침 변경</h2>
+        <p>본 방침이 변경될 경우, 이 페이지를 통해 공지합니다. 변경 사항은 게시 즉시 효력을 발생합니다.</p>
+
+        <h2>9. 문의처</h2>
+        <div class="contact-box">
+            <p class="contact-label">담당자</p>
+            <p class="contact-value">김건욱</p>
+            <br>
+            <p class="contact-label">이메일</p>
+            <p class="contact-value"><a href="mailto:kgu0724@makeitnow.kr">kgu0724@makeitnow.kr</a></p>
+        </div>
+
+        <!-- English -->
+        <div class="lang-divider"><span>English</span></div>
+
+        <h1>Privacy Policy</h1>
+        <p class="subtitle">EasyBlocks Controller</p>
+
+        <h2>1. Overview</h2>
+        <p>
+            EasyBlocks Controller (the "App") is a mobile application designed to communicate 
+            with external hardware devices such as HexaBoard via BLE (Bluetooth Low Energy). 
+            This Privacy Policy describes how the App handles information.
+        </p>
+
+        <h2>2. Information We Collect</h2>
+        <p><strong>This App does not collect any personal information.</strong></p>
+        <ul>
+            <li>There is no account registration or login functionality.</li>
+            <li>We do not request personally identifiable information such as name, email, or phone number.</li>
+            <li>App data including widget settings is stored only in the device's local storage and is never transmitted to external servers.</li>
+        </ul>
+
+        <h2>3. Bluetooth (BLE) Permissions</h2>
+        <p>The App requests the following Bluetooth-related permissions:</p>
+        <ul>
+            <li><strong>Bluetooth Scan</strong>: Used to discover nearby BLE devices.</li>
+            <li><strong>Bluetooth Connect</strong>: Used to exchange data with the selected BLE device.</li>
+        </ul>
+        <p>BLE communication data is transmitted directly between the App and the connected hardware device. It is not sent to or stored on any external server.</p>
+
+        <h2>4. Location Permission (Android)</h2>
+        <p>
+            Due to Android OS policy, location permission is required for BLE device scanning. 
+            This is a requirement of the Android operating system. 
+            <strong>The App does not collect, store, or transmit the user's actual location data.</strong>
+        </p>
+
+        <h2>5. Third-Party Sharing</h2>
+        <p>The App does not provide or share any data with third parties. No third-party services such as advertising SDKs or analytics tools are used.</p>
+
+        <h2>6. Data Retention and Deletion</h2>
+        <p>
+            All app data (such as widget settings) is stored only on the user's device. 
+            Uninstalling the App will delete all locally stored data. 
+            Users can also reset data directly within the App's settings.
+        </p>
+
+        <h2>7. Children's Privacy</h2>
+        <p>This App does not knowingly collect personal information from children under the age of 14.</p>
+
+        <h2>8. Changes to This Policy</h2>
+        <p>If this policy is updated, changes will be posted on this page. Changes take effect immediately upon posting.</p>
+
+        <h2>9. Contact</h2>
+        <div class="contact-box">
+            <p class="contact-label">Contact Person</p>
+            <p class="contact-value">Gunwook Kim</p>
+            <br>
+            <p class="contact-label">Email</p>
+            <p class="contact-value"><a href="mailto:kgu0724@makeitnow.kr">kgu0724@makeitnow.kr</a></p>
+        </div>
+
+        <p class="effective-date">시행일(Effective Date): 2026년 2월 11일 (February 11, 2026)</p>
+
+    </div>
+</body>
+</html>
