@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이지블록스 컨트롤러 - BLE 하드웨어 제어 앱</title>
+    <meta
+      name="description"
+      content="BLE(Bluetooth Low Energy)로 하드웨어를 간편하게 제어하세요. 버튼, 토글 위젯을 자유롭게 배치하고 커스터마이징할 수 있습니다."
+    />
+    <meta property="og:title" content="이지블록스 컨트롤러" />
+    <meta
+      property="og:description"
+      content="BLE로 하드웨어를 간편하게 제어하는 모바일 앱"
+    />
+    <meta property="og:type" content="website" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR",
+          sans-serif;
+        background-color: #0a0f1a;
+        color: #e2e8f0;
+        line-height: 1.7;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: #60a5fa;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Navigation */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 16px 24px;
+        background: rgba(10, 15, 26, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-logo {
+        font-size: 18px;
+        font-weight: 700;
+        color: #60a5fa;
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+      }
+      .nav-links a {
+        color: #94a3b8;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: #e2e8f0;
+        text-decoration: none;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 140px 24px 80px;
+        text-align: center;
+        position: relative;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.12) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 100px;
+        background: rgba(59, 130, 246, 0.15);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #60a5fa;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 24px;
+      }
+      .hero h1 {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 800;
+        color: #f1f5f9;
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+      .hero h1 span {
+        background: linear-gradient(135deg, #60a5fa, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-desc {
+        font-size: 18px;
+        color: #94a3b8;
+        max-width: 560px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+      }
+      .hero-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        transition: all 0.2s;
+        cursor: pointer;
+        border: none;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(59, 130, 246, 0.4);
+        text-decoration: none;
+        color: white;
+      }
+      .btn-secondary {
+        background: rgba(51, 65, 85, 0.5);
+        color: #e2e8f0;
+        border: 1px solid #334155;
+      }
+      .btn-secondary:hover {
+        background: rgba(51, 65, 85, 0.8);
+        transform: translateY(-2px);
+        text-decoration: none;
+        color: white;
+      }
+      .btn svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+      }
+
+      /* Section common */
+      section {
+        padding: 80px 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .section-label {
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600;
+        color: #60a5fa;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 12px;
+      }
+      .section-title {
+        text-align: center;
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 700;
+        color: #f1f5f9;
+        margin-bottom: 16px;
+      }
+      .section-desc {
+        text-align: center;
+        font-size: 16px;
+        color: #94a3b8;
+        max-width: 600px;
+        margin: 0 auto 56px;
+      }
+
+      /* Features */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+      .feature-card {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid #1e293b;
+        border-radius: 16px;
+        padding: 32px;
+        transition: all 0.3s;
+      }
+      .feature-card:hover {
+        border-color: #334155;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      }
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .feature-icon.blue {
+        background: rgba(59, 130, 246, 0.15);
+      }
+      .feature-icon.purple {
+        background: rgba(139, 92, 246, 0.15);
+      }
+      .feature-icon.green {
+        background: rgba(16, 185, 129, 0.15);
+      }
+      .feature-icon.amber {
+        background: rgba(245, 158, 11, 0.15);
+      }
+      .feature-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #f1f5f9;
+        margin-bottom: 8px;
+      }
+      .feature-card p {
+        font-size: 14px;
+        color: #94a3b8;
+        line-height: 1.7;
+      }
+
+      /* How it works */
+      .steps {
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .step {
+        flex: 1;
+        min-width: 220px;
+        max-width: 300px;
+        text-align: center;
+      }
+      .step-number {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.2),
+          rgba(139, 92, 246, 0.2)
+        );
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #60a5fa;
+        margin: 0 auto 20px;
+      }
+      .step h3 {
+        font-size: 17px;
+        font-weight: 600;
+        color: #f1f5f9;
+        margin-bottom: 8px;
+      }
+      .step p {
+        font-size: 14px;
+        color: #94a3b8;
+      }
+      .step-connector {
+        display: flex;
+        align-items: center;
+        color: #334155;
+        font-size: 24px;
+        padding-top: 16px;
+      }
+
+      /* Screenshots */
+      .screenshots-section {
+        padding: 80px 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .screenshots-scroll {
+        display: flex;
+        gap: 24px;
+        overflow-x: auto;
+        padding: 20px 0;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .screenshots-scroll::-webkit-scrollbar {
+        height: 6px;
+      }
+      .screenshots-scroll::-webkit-scrollbar-track {
+        background: #1e293b;
+        border-radius: 3px;
+      }
+      .screenshots-scroll::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 3px;
+      }
+      .screenshot-item {
+        flex: 0 0 auto;
+        scroll-snap-align: center;
+        text-align: center;
+      }
+      .screenshot-placeholder {
+        width: 560px;
+        height: 320px;
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        border: 1px solid #334155;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #475569;
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+      .screenshot-item p {
+        font-size: 14px;
+        color: #94a3b8;
+        font-weight: 500;
+      }
+
+      /* Specs */
+      .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+      }
+      .spec-item {
+        background: rgba(30, 41, 59, 0.4);
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 24px;
+      }
+      .spec-item h4 {
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+      }
+      .spec-item p {
+        font-size: 15px;
+        color: #e2e8f0;
+        font-weight: 500;
+      }
+
+      /* CTA */
+      .cta {
+        text-align: center;
+        padding: 80px 24px 100px;
+      }
+      .cta-box {
+        max-width: 640px;
+        margin: 0 auto;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.1),
+          rgba(139, 92, 246, 0.1)
+        );
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 24px;
+        padding: 56px 40px;
+      }
+      .cta-box h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #f1f5f9;
+        margin-bottom: 12px;
+      }
+      .cta-box p {
+        font-size: 16px;
+        color: #94a3b8;
+        margin-bottom: 32px;
+      }
+
+      /* Footer */
+      .footer {
+        border-top: 1px solid #1e293b;
+        padding: 40px 24px;
+        text-align: center;
+      }
+      .footer-links {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .footer-links a {
+        color: #64748b;
+        font-size: 14px;
+      }
+      .footer-links a:hover {
+        color: #94a3b8;
+      }
+      .footer-copy {
+        color: #475569;
+        font-size: 13px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero {
+          padding: 120px 20px 60px;
+        }
+        .hero-desc {
+          font-size: 16px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .step-connector {
+          display: none;
+        }
+        .screenshot-placeholder {
+          width: 340px;
+          height: 200px;
+        }
+        .cta-box {
+          padding: 40px 24px;
+        }
+        section {
+          padding: 60px 20px;
+        }
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+      .delay-1 {
+        animation-delay: 0.1s;
+        opacity: 0;
+      }
+      .delay-2 {
+        animation-delay: 0.2s;
+        opacity: 0;
+      }
+      .delay-3 {
+        animation-delay: 0.3s;
+        opacity: 0;
+      }
+      .delay-4 {
+        animation-delay: 0.4s;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-logo">EasyBlocks</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#specs">Specs</a>
+        <a href="privacy-policy.html">Privacy</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-badge animate">BLE Hardware Controller</div>
+      <h1 class="animate delay-1">
+        터치 한 번으로<br /><span>하드웨어를 제어</span>하세요
+      </h1>
+      <p class="hero-desc animate delay-2">
+        이지블록스 컨트롤러는 BLE(Bluetooth Low Energy)를 통해 HexaBoard 등 외부
+        하드웨어 기기를 간편하게 제어하는 모바일 앱입니다.
+      </p>
+      <div class="hero-buttons animate delay-3">
+        <a href="#" class="btn btn-primary">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M17.523 2H6.477C5.76 2 5.17 2.59 5.17 3.307v17.386C5.17 21.41 5.76 22 6.477 22h11.046c.717 0 1.307-.59 1.307-1.307V3.307C18.83 2.59 18.24 2 17.523 2zM12 20.735a1.14 1.14 0 110-2.28 1.14 1.14 0 010 2.28zM17.2 17.14H6.8V4.55h10.4v12.59z"
+            />
+          </svg>
+          App Store
+        </a>
+        <a href="#" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-1.4l2.406 1.395a1 1 0 010 1.738l-2.406 1.395-2.536-2.534 2.536-2.534zM5.864 3.458L16.8 9.791l-2.302 2.302-8.634-8.635z"
+            />
+          </svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <section id="features">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">강력하고 직관적인 기능</h2>
+      <p class="section-desc">
+        복잡한 설정 없이 BLE 기기를 연결하고, 나만의 컨트롤러를 만들어보세요.
+      </p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon blue">&#9889;</div>
+          <h3>간편한 BLE 연결</h3>
+          <p>
+            주변 BLE 기기를 자동으로 스캔하고, 탭 한 번으로 연결합니다. 복잡한
+            페어링 과정이 필요 없습니다.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon purple">&#9881;</div>
+          <h3>자유로운 위젯 구성</h3>
+          <p>
+            버튼, 토글 등 다양한 위젯을 그리드에 자유롭게 배치하고, 아이콘,
+            색상, 전송 값을 커스터마이징할 수 있습니다.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">&#128259;</div>
+          <h3>양방향 통신</h3>
+          <p>
+            BLE를 통해 기기에 명령을 보내고, 기기로부터 데이터를 수신할 수
+            있습니다. Nordic UART Service(NUS) 호환.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon amber">&#128241;</div>
+          <h3>가로 / 세로 모드 지원</h3>
+          <p>
+            기기를 어떻게 들고 있든 최적화된 레이아웃으로 제어할 수 있습니다.
+            가로 모드에서 더 많은 위젯을 한눈에.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">3단계로 시작하세요</h2>
+      <p class="section-desc">설치부터 제어까지, 1분이면 충분합니다.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>앱 설치</h3>
+          <p>
+            App Store 또는 Google Play에서 이지블록스 컨트롤러를 다운로드하세요.
+          </p>
+        </div>
+        <div class="step-connector">&#10132;</div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>BLE 기기 연결</h3>
+          <p>
+            블루투스를 켜고 주변 기기를 스캔한 후, 원하는 기기를 탭하여
+            연결하세요.
+          </p>
+        </div>
+        <div class="step-connector">&#10132;</div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>위젯으로 제어</h3>
+          <p>버튼을 누르거나 토글을 전환하여 연결된 하드웨어를 제어하세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshots -->
+    <div class="screenshots-section">
+      <p class="section-label">Screenshots</p>
+      <h2 class="section-title">앱 미리보기</h2>
+      <p class="section-desc">직관적인 다크 테마 UI로 설계되었습니다.</p>
+      <div class="screenshots-scroll">
+        <div class="screenshot-item">
+          <div class="screenshot-placeholder">메인 화면 스크린샷</div>
+          <p>터치 한 번으로 기기를 제어하세요</p>
+        </div>
+        <div class="screenshot-item">
+          <div class="screenshot-placeholder">BLE 연결 화면 스크린샷</div>
+          <p>블루투스로 간편하게 연결</p>
+        </div>
+        <div class="screenshot-item">
+          <div class="screenshot-placeholder">위젯 편집 화면 스크린샷</div>
+          <p>나만의 컨트롤러를 자유롭게 구성</p>
+        </div>
+        <div class="screenshot-item">
+          <div class="screenshot-placeholder">설정 화면 스크린샷</div>
+          <p>세부 설정까지 손쉽게 관리</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specs -->
+    <section id="specs">
+      <p class="section-label">Specifications</p>
+      <h2 class="section-title">기술 사양</h2>
+      <p class="section-desc">HexaBoard를 비롯한 BLE 기기와 호환됩니다.</p>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <h4>지원 플랫폼</h4>
+          <p>iOS 15.1+ / Android 6.0+</p>
+        </div>
+        <div class="spec-item">
+          <h4>통신 방식</h4>
+          <p>Bluetooth Low Energy (BLE 4.0+)</p>
+        </div>
+        <div class="spec-item">
+          <h4>프로토콜</h4>
+          <p>Nordic UART Service (NUS)</p>
+        </div>
+        <div class="spec-item">
+          <h4>위젯 종류</h4>
+          <p>버튼 / 토글 (추가 예정)</p>
+        </div>
+        <div class="spec-item">
+          <h4>데이터 저장</h4>
+          <p>기기 내 로컬 저장 (서버 전송 없음)</p>
+        </div>
+        <div class="spec-item">
+          <h4>가격</h4>
+          <p>무료</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta">
+      <div class="cta-box">
+        <h2>지금 바로 시작하세요</h2>
+        <p>이지블록스 컨트롤러로 하드웨어 제어를 더 간편하게.</p>
+        <div class="hero-buttons">
+          <a href="#" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path
+                d="M17.523 2H6.477C5.76 2 5.17 2.59 5.17 3.307v17.386C5.17 21.41 5.76 22 6.477 22h11.046c.717 0 1.307-.59 1.307-1.307V3.307C18.83 2.59 18.24 2 17.523 2zM12 20.735a1.14 1.14 0 110-2.28 1.14 1.14 0 010 2.28zM17.2 17.14H6.8V4.55h10.4v12.59z"
+              />
+            </svg>
+            App Store
+          </a>
+          <a href="#" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path
+                d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-1.4l2.406 1.395a1 1 0 010 1.738l-2.406 1.395-2.536-2.534 2.536-2.534zM5.864 3.458L16.8 9.791l-2.302 2.302-8.634-8.635z"
+              />
+            </svg>
+            Google Play
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="privacy-policy.html">개인정보처리방침</a>
+        <a href="mailto:kgu0724@makeitnow.kr">문의하기</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 MakeItNow. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
