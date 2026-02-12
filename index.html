@@ -335,19 +335,18 @@
         scroll-snap-align: center;
         text-align: center;
       }
-      .screenshot-placeholder {
-        width: 560px;
-        height: 320px;
-        background: linear-gradient(135deg, #1e293b, #0f172a);
-        border: 1px solid #334155;
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #475569;
-        font-size: 15px;
-        margin-bottom: 12px;
-      }
+        .screenshot-img {
+            width: 560px;
+            height: auto;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        .screenshot-img:hover {
+            transform: scale(1.02);
+        }
       .screenshot-item p {
         font-size: 14px;
         color: #94a3b8;
@@ -448,9 +447,8 @@
         .step-connector {
           display: none;
         }
-        .screenshot-placeholder {
-          width: 340px;
-          height: 200px;
+        .screenshot-img {
+          width: 320px;
         }
         .cta-box {
           padding: 40px 24px;
@@ -613,24 +611,16 @@
       <p class="section-label">Screenshots</p>
       <h2 class="section-title">앱 미리보기</h2>
       <p class="section-desc">직관적인 다크 테마 UI로 설계되었습니다.</p>
-      <div class="screenshots-scroll">
-        <div class="screenshot-item">
-          <div class="screenshot-placeholder">메인 화면 스크린샷</div>
-          <p>터치 한 번으로 기기를 제어하세요</p>
+        <div class="screenshots-scroll">
+            <div class="screenshot-item">
+                <img src="screenshots/screenshot1.png" alt="메인 화면 - 위젯 컨트롤러" class="screenshot-img">
+                <p>터치 한 번으로 기기를 제어하세요</p>
+            </div>
+            <div class="screenshot-item">
+                <img src="screenshots/screenshot2.png" alt="BLE 연결 및 위젯 편집" class="screenshot-img">
+                <p>나만의 컨트롤러를 자유롭게 구성</p>
+            </div>
         </div>
-        <div class="screenshot-item">
-          <div class="screenshot-placeholder">BLE 연결 화면 스크린샷</div>
-          <p>블루투스로 간편하게 연결</p>
-        </div>
-        <div class="screenshot-item">
-          <div class="screenshot-placeholder">위젯 편집 화면 스크린샷</div>
-          <p>나만의 컨트롤러를 자유롭게 구성</p>
-        </div>
-        <div class="screenshot-item">
-          <div class="screenshot-placeholder">설정 화면 스크린샷</div>
-          <p>세부 설정까지 손쉽게 관리</p>
-        </div>
-      </div>
     </div>
 
     <!-- Specs -->
